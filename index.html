@@ -19,7 +19,7 @@
 
 <body>
     <div id='container'>
-        <div id="message">App ready</div>
+        <div id='message'></div>
     </div>
     <script>
     window.onload = function() {
@@ -27,26 +27,7 @@
         window.mediaManager = new cast.receiver.MediaManager(window.containerElement);
         window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
 
-
-        // handler for the 'ready' event
-        window.castReceiverManager.onReady = function(event) {
-            console.log('Received Ready event: ' + JSON.stringify(event.data));
-            window.castReceiverManager.setApplicationState("Application status is ready...");
-        };
-
-        // handler for 'senderconnected' event
-        window.castReceiverManager.onSenderConnected = function(event) {
-            console.log('Received Sender Connected event: ' + event.data);
-            console.log(window.castReceiverManager.getSender(event.data).userAgent);
-        };
-
-        // handler for 'senderdisconnected' event
-        window.castReceiverManager.onSenderDisconnected = function(event) {
-            console.log('Received Sender Disconnected event: ' + event.data);
-            if (window.castReceiverManager.getSenders().length == 0) {
-                window.close();
-            }
-        };
+        
 
         // create a CastMessageBus to handle messages for a custom namespace
         window.messageBus =
@@ -63,18 +44,21 @@
             window.messageBus.send(event.senderId, event.data);
         }
 
-        // initialize the CastReceiverManager with an application status message
-        window.castReceiverManager.start({
-            statusText: "Application is starting"
-        });
-        console.log('Receiver Manager started');
-    };
+        window.castReceiverManager.start();
 
-    // utility function to display the text message in the input field
-    function displayText(text) {
-        console.log(text);
-        document.getElementById("message").innerHTML = text;
-        window.castReceiverManager.setApplicationState(text);
+        window.castReceiverManager.onSenderDisconnected = function(event) {
+            if (window.castReceiverManager.getSenders().length == 0 &&
+                event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
+                window.close();
+            }
+        }
+        
+        // utility function to display the text message in the input field
+        function displayText(text) {
+            console.log(text);
+            document.getElementById("message").innerHTML = text;
+            window.castReceiverManager.setApplicationState(text);
+        };
     };
     </script>
 </body>
