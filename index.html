@@ -4,16 +4,39 @@
     <title>FootballStream</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+    <!-- <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script> -->
 </head>
 
 <body>
-    <div data-matches="" id='container' class="container">
-        <div id='message'></div>
+    <div data-matches="" id='container' class="container-fluid">
+        <!-- <div class="row">
+            <div class="col-md-6">
+                <div class="thumbnail">
+                    <h1>Test</h1>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="thumbnail">
+                    <h1>Test</h1>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="thumbnail">
+                    <h1>Test</h1>
+                </div>
+            </div>
+        </div> -->
     </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/chromecast.js"></script>
+    <!-- <script src="js/chromecast.js"></script> -->
+    <script>
+    $(document).ready(function() {
+        var $container = $("#container");
+        $container.data('matches', "663,665,87");
+        $(document).trigger('data-message-changed');
+    })
+    </script>
     <script src="js/divide.js"></script>
 </body>
 
