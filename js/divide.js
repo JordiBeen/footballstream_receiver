@@ -42,15 +42,19 @@ function splitScreen() {
     // Create HTML according to match amount
     var html = "";
     for (var i = 0; i < matchAmount; i++) {
-        html += '<div data-match-id=' + matchArray[i] + ' class="match col-md-' + columnClass + '">\
-                    <h1 class="matchup"></h1>\
-                    <h2 class="score"></h2>\
-                    <p class="stadium"></p>\
-                    <p class="attendance"></p>\
-                    <p class="referee"></p>\
-                    <div class="events"></div>\
-                    <div class="competition"></div>\
-                </div>';
+        html += '   <div class="col-md-' + columnClass + '"">\
+                        <div data-match-id=' + matchArray[i] + ' class="match well">\
+                            <div class="header text-center">\
+                                <h1 class="matchup"></h1>\
+                                <h2 class="score"></h2>\
+                            </div>\
+                            <p class="stadium"></p>\
+                            <p class="attendance"></p>\
+                            <p class="referee"></p>\
+                            <div class="events"></div>\
+                            <div class="competition"></div>\
+                        </div>\
+                    </div>';
     };
 
     // Append the HTML to the container
@@ -68,13 +72,13 @@ function getDataForEachMatch() {
     var matchesObject = {}
 
     // Array to store get requests to be made
-    var gets = [];
+    var requests = [];
 
     // Loop through all matches and create get request according to match id
     $matches.each(function(i) {
         $this = $(this);
         var matchId = $this.data('match-id');
-        gets.push($.ajax({
+        requests.push($.ajax({
             type: "GET",
             url: "http://footballstream-api.jordibeen.nl/api/v1/matches/" + matchId,
             success: function(data) {
@@ -84,7 +88,7 @@ function getDataForEachMatch() {
     });
 
     // Fire off all get requests, and fill the data when they are done
-    $.when.apply($, gets).then(function() {
+    $.when.apply($, requests).then(function() {
         fillDataForEachMatch(matchesObject);
     })
 }
@@ -101,7 +105,7 @@ function fillDataForEachMatch(matchesObject) {
         // MATCHUP
         $matchNode.find('.matchup').html(matchInfo['matchup']);
         // SCORE
-        $matchNode.find('.score').html(matchInfo['visitorteam_score'] + " - " + matchInfo['localteam_score']);
+        $matchNode.find('.score').html(matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score']);
         // STADIUM
         $matchNode.find('.stadium').html(matchInfo['stadium']);
 

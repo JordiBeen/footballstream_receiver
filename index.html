@@ -3,6 +3,8 @@
 <head>
     <title>FootballStream</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/ripples.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-material-design.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script> -->
 </head>
@@ -10,15 +12,18 @@
 <body>
     <div data-matches="" id='container' class="container-fluid">
     </div>
+
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/ripples.min.js"></script>
+    <script src="js/material.min.js"></script>
     <!-- <script src="js/chromecast.js"></script> -->
     <script>
-    $(document).ready(function() {
-        var $container = $("#container");
-        $container.data('matches', "663,665,664,666");
-        $(document).trigger('data-message-changed');
-    })
+        $(document).ready(function() {
+            var $container = $("#container");
+            $container.data('matches', "663,665,664,666");
+            $(document).trigger('data-message-changed');
+        })
     </script>
     <script src="js/divide.js"></script>
 </body>
