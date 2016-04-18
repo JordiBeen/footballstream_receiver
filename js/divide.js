@@ -45,10 +45,10 @@ function splitScreen() {
         html += '   <div class="col-md-' + columnClass + '"">\
                         <div data-match-id=' + matchArray[i] + ' class="match well">\
                             <div class="header text-center">\
+                                <p class="date_start"></p>\
                                 <h1 class="matchup"></h1>\
-                                <h2 class="score"></h2>\
+                                <h2 class="status"></h2>\
                             </div>\
-                            <p class="stadium"></p>\
                             <p class="attendance"></p>\
                             <p class="referee"></p>\
                             <div class="events"></div>\
@@ -102,10 +102,49 @@ function fillDataForEachMatch(matchesObject) {
         // will return empty HTML node already loaded in the DOM
         var $matchNode = $("div[data-match-id='" + matchId + "'");
 
+        // Replace all characters with a - so we get a date object
+        // like this: "01-01-2016-20-30"
+        var match_data_raw = matchInfo['date_start'].replace(' ', '-').replace(':', '-');
+        // Split the datestring so we get an array
+        var date_part = match_data_raw.split('-');
+
+        // Get current date
+        var now = new Date();
+        // The following is used to parse our European date format into a JavaScript date object
+        var match_datetime = new Date(date_part[2], date_part[1]-1, date_part[0], date_part[3], date_part[4]);
+
+        // We need to do this twice, because we check on setHours later,
+        // this caused the current date to lose all hours, minutes and seconds values
+        var check_now = new Date();
+        var check_match_datetime = new Date(date_part[2], date_part[1]-1, date_part[0], date_part[3], date_part[4]);
+
+        // Check if the date is in the future, but it is today
+        if(match_datetime > now && (check_now.setHours(0,0,0,0) == check_match_datetime.setHours(0,0,0,0))){
+            console.log(match_datetime);
+            $matchNode.find('.status').countdown(match_datetime, function(event){
+                $(this).text(
+                    event.strftime("Starts in %-H hours and %M minutes and %S seconds")
+                )
+            })
+        // Check if the date is in the future
+        } else if (match_datetime > now){
+            $matchNode.find('.status').countdown(match_datetime, function(event){
+                $(this).text(
+                    event.strftime("Starts %-D days from now")
+                )
+            });
+        // The date has passed, game has begun or is finished, we can show the score now
+        } else {
+            $matchNode.find('.status').html("<strong>" + matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score'] + "</strong>");
+        }
+        
+        // DATE START
+        $matchNode.find('.date_start').html(matchInfo['date_start']);
+
         // MATCHUP
         $matchNode.find('.matchup').html(matchInfo['matchup']);
-        // SCORE
-        $matchNode.find('.score').html(matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score']);
+
+        
         // STADIUM
         $matchNode.find('.stadium').html(matchInfo['stadium']);
 
