@@ -46,17 +46,22 @@ function splitScreen() {
                         <div data-match-id=' + matchArray[i] + ' class="match text-center well">\
                             <div class="row">\
                                 <p class="date_start"></p>\
+                                <p class="venue"></p>\
+                                <p class="competition"></p>\
                                 <p class="matchup"></p>\
                                 <p class="status"></p>\
                             </div>\
                             <div class="row info hidden">\
-                                <p class="attendance"></p>\
-                                <p class="referee"></p>\
                                 <div class="events"></div>\
-                                <div class="competition"></div>\
                                 <div class="home col-md-4"></div>\
                                 <div class="stats col-md-4"></div>\
                                 <div class="away col-md-4"></div>\
+                                <div class="row">\
+                                    <div class="col-md-8 col-md-offset-2 col-xs-12 tweet hidden">\
+                                        <div class="col-md-3 col-xs-2 text-right tweet-img"><img/></div>\
+                                        <div class="col-md-9 col-xs-10 text-left alert alert-dismissible alert-info tweet-text"></div>\
+                                    </div>\
+                                </div>\
                             </div>\
                         </div>\
                     </div>';
@@ -112,6 +117,12 @@ function fillBasicInfoForEachMatch(matchesObject) {
         // DATE START
         $matchNode.find('.date_start').html(matchInfo['date_start']);
 
+        // VENUE
+        $matchNode.find('.venue').html(matchInfo['venue']);
+
+        // COMPETITION
+        $matchNode.find('.competition').html(matchInfo['competition']['name']);
+
         // MATCHUP
         $matchNode.find('.matchup').html(matchInfo['matchup']);
 
@@ -135,7 +146,7 @@ function fillBasicInfoForEachMatch(matchesObject) {
         if(match_datetime > now && (check_now.setHours(0,0,0,0) == check_match_datetime.setHours(0,0,0,0))){
             $matchNode.find('.status').html("<p class='countdown'></p>").countdown(match_datetime, function(event){
                 $(this).find('.countdown').text(
-                    event.strftime("Starts in %-H hours and %M minutes and %S seconds")
+                    event.strftime("Starts in %-H hours and %-M minutes and %-S seconds")
                 )
             })
         // Check if the date is in the future
@@ -160,6 +171,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
     var $info = $matchNode.find('.info');
     $info.removeClass('hidden');
 
+    // STATS
     var $home = $info.find('.home');
     var $stats = $info.find('.stats');
     var $away = $info.find('.away');
@@ -190,4 +202,38 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
             $away.append("<p class=" + stat + ">" + stats[stat] + "</p>");    
         }
     }
+
+    // TWEET
+    var $tweet = $info.find('.tweet')
+    var tweets = matchInfo['tweets'];
+    if(tweets){
+        var tweet = tweets[Math.floor(Math.random() * tweets.length)];
+        $tweet.removeClass('hidden');
+        $tweet.find('img').attr("src", tweet['profile_image_url']);
+        $tweet.find('.tweet-text').append("<span class='twitter-user'>@" + tweet['name'] + ":</span><span class='tweet'>" + tweet['text'] + "</span>");
+        $tweet.find('img').height($tweet.find('.tweet-text').innerHeight());
+    }
+
+    var commentaries = matchInfo['commentaries'];
+    console.log(commentaries)
+
+
+//     // COMMENTARIES
+//     var commentaries = []
+//     for(commentary in matchInfo['commentaries']){
+//         var commentary = matchInfo['commentaries'][commentary];
+//         var minute = commentary['minute'].replace('\'', '');
+//         commentaries[minute] = commentary;
+//     }
+
+
+//     commentaries.sort();
+//     commentaries.reverse().reverse();
+//     for(commentary in commentaries){
+//         console.log(commentary);
+//         var commentary = commentaries[commentary]
+//         console.log(commentary);
+//     }
+//     console.log(commentaries);
+
 }

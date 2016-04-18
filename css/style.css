@@ -3,5 +3,12 @@
 }
 
 .score {
-	font-size:6em;
+	font-size:3.5em;
+}
+
+
+
+.twitter-user {
+	font-weight: bold;
+	display: block;
 }
