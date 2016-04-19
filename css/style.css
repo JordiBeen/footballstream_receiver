@@ -61,7 +61,7 @@ body {
     background-color: #0000FF;
 }
 
-.eredivise .panel-heading {
+.eredivisie .panel-heading {
     background-color: #FF8000;
 }
 
@@ -101,7 +101,7 @@ body {
     border-top: 2px solid #0000FF;
     border-bottom: 2px solid #0000FF;
 }
-.eredivise .commentary-body {
+.eredivisie .commentary-body {
     border-top: 2px solid #FF8000;
     border-bottom: 2px solid #FF8000;
 }
@@ -135,7 +135,7 @@ body {
 .serie-a .away {
     border-right: 1px solid #0000FF;
 }
-.eredivise .away {
+.eredivisie .away {
     border-right: 1px solid #FF8000;
 }
 .primeira-liga .away {
@@ -166,7 +166,7 @@ body {
 .serie-a .events {
     border-left: 1px solid #0000FF;
 }
-.eredivise .events {
+.eredivisie .events {
     border-left: 1px solid #FF8000;
 }
 .primeira-liga .events {
