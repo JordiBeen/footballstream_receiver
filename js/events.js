@@ -6,7 +6,13 @@ function showEvent(eventInfo) {
     var type = eventInfo["type"];
     var player = eventInfo["player"];
     var team = eventInfo["team"]["name"];
-    var minute = eventInfo["minute"] + '\'';
+    var minute = eventInfo["minute"];
+
+    if (eventInfo["extra_min"]) {
+        minute += eventInfo["extra_min"] + "'";
+    } else {
+        minute += "'";
+    }
 
     var eventToStringMapping = {
         "yellowcard": "Yellow Card!",
