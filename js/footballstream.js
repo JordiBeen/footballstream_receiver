@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    setTimeout(function(){
+        $('body').removeClass('loading');
+    }, 3000);
+});
+
 $(document).on('data-message-changed', function() {
     splitScreen();
     setInterval(function(){ 
