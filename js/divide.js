@@ -1,5 +1,8 @@
 $(document).on('data-message-changed', function() {
     splitScreen();
+    setInterval(function(){ 
+        getDataForEachMatch(false);
+    }, 15000);
 });
 
 function splitScreen() {
@@ -58,9 +61,10 @@ function splitScreen() {
                             </div>\
                             <div class="row info hidden">\
                                 <div class="commentary-body hidden commentary"></div>\
-                                <div class="home col-md-2"></div>\
-                                <div class="stats col-md-2"></div>\
-                                <div class="away col-md-2"></div>\
+                                <div class="col-md-6">\
+                                    <table class="table borderless text-center stats">\
+                                    </table>\
+                                </div>\
                                 <div class="events col-md-6"></div>\
                                 <div class="row">\
                                     <div class="col-md-8 col-md-offset-2 col-xs-12 tweet hidden">\
@@ -76,11 +80,11 @@ function splitScreen() {
     // Append the HTML to the container
     $container.html(html);
 
-    // Fire off the getData function
-    getDataForEachMatch()
+    // Fire off the initial getData function
+    getDataForEachMatch(true);
 }
 
-function getDataForEachMatch() {
+function getDataForEachMatch(firstTime) {
     var $matches = $(".match");
     var matchesLength = $matches.length;
 
@@ -105,11 +109,11 @@ function getDataForEachMatch() {
 
     // Fire off all get requests, and fill the data when they are done
     $.when.apply($, requests).then(function() {
-        fillBasicInfoForEachMatch(matchesObject);
+        fillBasicInfoForEachMatch(matchesObject, firstTime);
     })
 }
 
-function fillBasicInfoForEachMatch(matchesObject) {
+function fillBasicInfoForEachMatch(matchesObject, firstTime) {
     // Loop through all matches in the matches object
     for (matchId in matchesObject) {
         // Get match info object per match
@@ -142,50 +146,52 @@ function fillBasicInfoForEachMatch(matchesObject) {
         // Get current date
         var now = new Date();
         // The following is used to parse our European date format into a JavaScript date object
-        var match_datetime = new Date(date_part[2], date_part[1]-1, date_part[0], date_part[3], date_part[4]);
+        var match_datetime = new Date(date_part[2], date_part[1] - 1, date_part[0], date_part[3], date_part[4]);
 
         // We need to do this twice, because we check on setHours later,
         // this caused the current date to lose all hours, minutes and seconds values
         var check_now = new Date();
-        var check_match_datetime = new Date(date_part[2], date_part[1]-1, date_part[0], date_part[3], date_part[4]);
+        var check_match_datetime = new Date(date_part[2], date_part[1] - 1, date_part[0], date_part[3], date_part[4]);
 
         // Check if the date is in the future, but it is today
-        if(match_datetime > now && (check_now.setHours(0,0,0,0) == check_match_datetime.setHours(0,0,0,0))){
-            $matchNode.find('.status').html("<p class='countdown'></p>").countdown(match_datetime, function(event){
-                $(this).find('.countdown').text(
-                    event.strftime("Starts in %-H hours and %-M minutes and %-S seconds")
-                )
-            })
-        // Check if the date is in the future
-        } else if (match_datetime > now){
-            $matchNode.find('.status').countdown(match_datetime, function(event){
-                $(this).text(
-                    event.strftime("Starts %-D days from now")
-                )
-            });
-        // The date has passed, game has begun or is finished, we can show all of our info now
+        if (match_datetime > now && (check_now.setHours(0, 0, 0, 0) == check_match_datetime.setHours(0, 0, 0, 0))) {
+            if(firstTime){
+                $matchNode.find('.status').html("<p class='countdown'></p>").countdown(match_datetime, function(event) {
+                    $(this).find('.countdown').text(
+                        event.strftime("Starts in %-H hours and %-M minutes and %-S seconds")
+                    )
+                });
+            }
+                // Check if the date is in the future
+        } else if (match_datetime > now) {
+            if(firstTime){
+                $matchNode.find('.status').countdown(match_datetime, function(event) {
+                    $(this).text(
+                        event.strftime("Starts %-D days from now")
+                    )
+                });
+            }
+            // The date has passed, game has begun or is finished, we can show all of our info now
         } else {
-            fillDetailedInfoForEachMatch(matchInfo, $matchNode);
+            fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime);
         }
     }
 }
 
-function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
+function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     // Show score
     $matchNode.find('.status').html("<span class='score'><strong>" + matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score'] + "</strong></span>");
 
     // Remove hidden info div    
     var $info = $matchNode.find('.info');
     $info.removeClass('hidden');
-    teamMapping = {}
-
+    
     // STATS
-    var $home = $info.find('.home');
     var $stats = $info.find('.stats');
-    var $away = $info.find('.away');
+    teamMapping = {}
     teamMapping[matchInfo['home_team']['id']] = 'home';
     teamMapping[matchInfo['away_team']['id']] = 'away';
-    
+
     var localteam = matchInfo['match_stats']['localteam'];
     var awayteam = matchInfo['match_stats']['visitorteam'];
     var statToStringMapping = {
@@ -199,72 +205,88 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
         "possesiontime": "Possession",
         "shots_total": "Shots total"
     };
-    for(stats in localteam){
-        stats = localteam[stats];
-        for(stat in stats){
-            $home.append("<p class=" + stat + ">" + stats[stat] + "</p>");    
-            $stats.append("<p><strong>" + statToStringMapping[stat] + "</strong></p>")
-        }
-    }
 
-    for(stats in awayteam){
-        stats = awayteam[stats];
-        for(stat in stats){
-            $away.append("<p class=" + stat + ">" + stats[stat] + "</p>");    
+    $stats.html("");
+    for (stats in localteam) {
+        local_stats = localteam[stats];
+        away_stats = awayteam[stats];
+        for (stat in local_stats) {
+            $stats.append("<tr><td>" + local_stats[stat] + "</td><td><strong>" + statToStringMapping[stat] + "</strong></td><td>" + away_stats[stat] + "</td></tr>")
         }
     }
 
     // TWEET
     var $tweet = $info.find('.tweet')
     var tweets = matchInfo['tweets'];
-    if(tweets){
+    if (tweets) {
         var tweet = tweets[Math.floor(Math.random() * tweets.length)];
         $tweet.removeClass('hidden');
         $tweet.find('img').attr("src", tweet['profile_image_url']);
-        $tweet.find('.tweet-text').append("<span class='twitter-user'>@" + tweet['name'] + ":</span><span class='tweet'>" + tweet['text'] + "</span>");
+        $tweet.find('.tweet-text').html("<span class='twitter-user'>@" + tweet['name'] + ":</span><span class='tweet'>" + tweet['text'] + "</span>");
         $tweet.find('img').height($tweet.find('.tweet-text').innerHeight());
-    }
-
-    // EVENTS
-    var events = matchInfo['events'];
-    if(events){
-        var html = "";
-        for(event in events){
-            event = events[event];
-            var teamSide = teamMapping[event['team']['id']];
-
-            if (event["extra_min"]){
-                event["extra_min"] = "+" + event["extra_min"];
-            } else {
-                event["extra_min"] = "";
-            }
-
-            html += '<p class=' + teamSide + '-events>\
-                            <img src="./images/' + event["type"] + '.png"/>\
-                            <span class="player">' + event["player"] + '</span>\
-                            <span class="result">' + event["result"] + '</span>\
-                            <span class="assist">' + event["assist"] + '</span>\
-                            <span class="minute">' + event["minute"] + event["extra_min"]  + '</span>\
-                        <p>\
-            ';
-        }
-        $info.find('.events').html(html);
     }
 
     // LATEST COMMENTARY
     var commentaries = matchInfo['commentaries'];
-    if(commentaries && commentaries[0] !== 'undefined'){
+    if (commentaries && commentaries[0] !== 'undefined') {
         commentary = commentaries[0];
         $info.find('.commentary').removeClass('hidden');
         $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
     }
 
-    if($info.find('.away').height() < $info.find('.events').height()){
-        $info.find('.away').height($info.find('.events').height());
-    } else if ($info.find('.away').innerHeight() > $info.find('.events').innerHeight()){
-        $info.find('.events').height($info.find('.away').height());
+    // EVENTS
+    var events = matchInfo['events'];
+    var $events = $info.find('.events')
+    if (events) {
+        var html = "";
+        // Sort events by minute ascending
+        events.sort(function(a, b) {
+            return (a.minute > b.minute) ? 1 : ((b.minute > a.minute) ? -1 : 0); 
+        });
+        for (event in events) {
+            event = events[event];
+            var teamSide = teamMapping[event['team']['id']];
+
+            if (event["type"] == 'yellowred') {
+                event["type"] = 'redcard';
+            }
+
+            if (event["extra_min"]) {
+                event["extra_min"] = "+" + event["extra_min"];
+            } else {
+                event["extra_min"] = "";
+            }
+
+            if (event["assist"]) {
+                event["assist"] = "Assist: " + event["assist"];
+            }
+
+            html += '<p class=' + teamSide + '-events>\
+                            <span class="minute">' + event["minute"] + event["extra_min"] + '\'</span>\
+                            <img src="/images/' + event["type"] + '.png"/>\
+                            <span class="player">' + event["player"] + '</span>\
+                            <span class="result">' + event["result"].replace("[", "(").replace("]", ")") + '</span>\
+                            <span class="assist">' + event["assist"] + '</span>\
+                        <p>\
+            ';
+        }
+
+        // Check if the new last event is new,
+        var last_event = events[events.length - 1];
+        if(!($events.data('last-event-id') == last_event['id'])){
+            $events.data('last-event-id', last_event['id']);
+            // If is the first time we're checking data?
+            if(!firstTime){
+                $(document).trigger("new-match-event", last_event);
+            }
+            
+        } 
+        $events.html(html);
     }
 
-    // LATEST EVENTS
-    $(document).trigger("new-match-event", events[0]);
+    if ($info.find('.stats').height() < $info.find('.events').height()) {
+        $info.find('.stats').height($info.find('.events').height());
+    } else if ($info.find('.stats').innerHeight() > $info.find('.events').innerHeight()) {
+        $info.find('.events').height($info.find('.stats').height());
+    }
 }
