@@ -42,7 +42,7 @@ function splitScreen() {
     // Create HTML according to match amount
     var html = "";
     for (var i = 0; i < matchAmount; i++) {
-        html += '   <div class="col-md-' + columnClass + '"">\
+        html += '   <div class="col-md-' + columnClass + ' match-col">\
                         <div class="panel-heading text-center">\
                             <h3 class="panel-title competition"></h3>\
                         </div>\
@@ -54,11 +54,11 @@ function splitScreen() {
                                 <p class="status"></p>\
                             </div>\
                             <div class="row info hidden">\
-                                <div class="events"></div>\
-                                <div class="panel panel-default hidden"><div class="panel-body commentary"></div></div>\
-                                <div class="home col-md-4"></div>\
-                                <div class="stats col-md-4"></div>\
-                                <div class="away col-md-4"></div>\
+                                <div class="commentary-body hidden commentary"></div>\
+                                <div class="home col-md-2"></div>\
+                                <div class="stats col-md-2"></div>\
+                                <div class="away col-md-2"></div>\
+                                <div class="events col-md-6"></div>\
                                 <div class="row">\
                                     <div class="col-md-8 col-md-offset-2 col-xs-12 tweet hidden">\
                                         <div class="col-md-3 col-xs-2 text-right tweet-img"><img/></div>\
@@ -125,7 +125,7 @@ function fillBasicInfoForEachMatch(matchesObject) {
 
         // COMPETITION
         $matchNode.parent().find('.competition').html(matchInfo['competition']['name']);
-        $matchNode.parent().find('.competition').parent().attr("data-competition", matchInfo['competition']['name']);
+        $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').toLowerCase());
 
         // MATCHUP
         $matchNode.find('.matchup').html(matchInfo['matchup']);
@@ -174,11 +174,15 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
     // Remove hidden info div    
     var $info = $matchNode.find('.info');
     $info.removeClass('hidden');
+    teamMapping = {}
 
     // STATS
     var $home = $info.find('.home');
     var $stats = $info.find('.stats');
     var $away = $info.find('.away');
+    teamMapping[matchInfo['home_team']['id']] = 'home';
+    teamMapping[matchInfo['away_team']['id']] = 'away';
+    
     var localteam = matchInfo['match_stats']['localteam'];
     var awayteam = matchInfo['match_stats']['visitorteam'];
     var statToStringMapping = {
@@ -218,11 +222,43 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
         $tweet.find('img').height($tweet.find('.tweet-text').innerHeight());
     }
 
+    // EVENTS
+    var events = matchInfo['events'];
+    if(events){
+        var html = "";
+        for(event in events){
+            event = events[event];
+            var teamSide = teamMapping[event['team']['id']];
+
+            if (event["extra_min"]){
+                event["extra_min"] = "+" + event["extra_min"];
+            } else {
+                event["extra_min"] = "";
+            }
+
+            html += '<p class=' + teamSide + '-events>\
+                            <img src="/images/' + event["type"] + '.png"/>\
+                            <span class="player">' + event["player"] + '</span>\
+                            <span class="result">' + event["result"] + '</span>\
+                            <span class="assist">' + event["assist"] + '</span>\
+                            <span class="minute">' + event["minute"] + event["extra_min"]  + '</span>\
+                        <p>\
+            ';
+        }
+        $info.find('.events').html(html);
+    }
+
     // LATEST COMMENTARY
     var commentaries = matchInfo['commentaries'];
     if(commentaries && commentaries[0] !== 'undefined'){
         commentary = commentaries[0];
-        $info.find('.commentary').parent().removeClass('hidden');
+        $info.find('.commentary').removeClass('hidden');
         $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
+    }
+
+    if($info.find('.away').height() < $info.find('.events').height()){
+        $info.find('.away').height($info.find('.events').height());
+    } else if ($info.find('.away').innerHeight() > $info.find('.events').innerHeight()){
+        $info.find('.events').height($info.find('.away').height());
     }
 }

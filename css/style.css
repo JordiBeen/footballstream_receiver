@@ -1,3 +1,11 @@
+body { 
+  background: url(/images/background.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 #container {
     margin-top: 5px;
 }
@@ -14,47 +22,169 @@
 	font-weight: bold;
 	display: block;
 }
+
 .panel-title {
     font-weight: 700;
 }
 
+.commentary-body {
+    padding: 5px;
+    margin-bottom:25px;
+}
+
 /* Set competition background */
-[data-competition="UEFA Champions League"] {
+.uefa-champions-league .panel-heading {
     background-color: #FFD700;
 }
 
-[data-competition="UEFA Europa League"] {
+.uefa-europa-league .panel-heading {
     background-color: #CC6633;
 }
 
-[data-competition="Fa Cup"] {
+.fa-cup .panel-heading {
     background-color: #006699;
 }
 
-[data-competition="Premier League"] {
+.premier-league .panel-heading {
     background-color: #0080FF;
 }
 
-[data-competition="Ligue 1"] {
+.ligue-1 .panel-heading {
     background-color: #8000FF;
 }
 
-[data-competition="Bundesliga"] {
+.bundesliga .panel-heading {
     background-color: #FF0000;
 }
 
-[data-competition="Serie A"] {
+.serie-a .panel-heading {
     background-color: #0000FF;
 }
 
-[data-competition="Eredivisie"] {
+.eredivise .panel-heading {
     background-color: #FF8000;
 }
 
-[data-competition="Primeira Liga"] {
+.primeira-liga .panel-heading {
     background-color: #00FF40;
 }
 
-[data-competition="Primera División"] {
+.primera-división .panel-heading {
     background-color: #FF0080;
+}
+
+.uefa-champions-league .commentary-body {
+    border-top: 2px solid #FFD700;
+    border-bottom: 2px solid #FFD700;
+}
+.uefa-europa-league .commentary-body {
+    border-top: 2px solid #CC6633;
+    border-bottom: 2px solid #CC6633;
+}
+.fa-cup .commentary-body {
+    border-top: 2px solid #006699;
+    border-bottom: 2px solid #006699;
+}
+.premier-league .commentary-body {
+    border-top: 2px solid #0080FF;
+    border-bottom: 2px solid #0080FF;
+}
+.ligue-1 .commentary-body {
+    border-top: 2px solid #8000FF;
+    border-bottom: 2px solid #8000FF;
+}
+.bundesliga .commentary-body {
+    border-top: 2px solid #FF0000;
+    border-bottom: 2px solid #FF0000;
+}
+.serie-a .commentary-body {
+    border-top: 2px solid #0000FF;
+    border-bottom: 2px solid #0000FF;
+}
+.eredivise .commentary-body {
+    border-top: 2px solid #FF8000;
+    border-bottom: 2px solid #FF8000;
+}
+.primeira-liga .commentary-body {
+    border-top: 2px solid #00FF40;
+    border-bottom: 2px solid #00FF40;
+}
+.primera-división .commentary-body {
+    border-top: 2px solid #FF0080;
+    border-bottom: 2px solid #FF0080;
+}
+
+.uefa-champions-league .away {
+    border-right: 1px solid #FFD700;
+}
+.uefa-europa-league .away {
+    border-right: 1px solid #CC6633;
+}
+.fa-cup .away {
+    border-right: 1px solid #006699;
+}
+.premier-league .away {
+    border-right: 1px solid #0080FF;
+}
+.ligue-1 .away {
+    border-right: 1px solid #8000FF;
+}
+.bundesliga .away {
+    border-right: 1px solid #FF0000;
+}
+.serie-a .away {
+    border-right: 1px solid #0000FF;
+}
+.eredivise .away {
+    border-right: 1px solid #FF8000;
+}
+.primeira-liga .away {
+    border-right: 1px solid #00FF40;
+}
+.primera-división .away {
+    border-right: 1px solid #FF0080;
+}
+
+.uefa-champions-league .events {
+    border-left: 1px solid #FFD700;
+}
+.uefa-europa-league .events {
+    border-left: 1px solid #CC6633;
+}
+.fa-cup .events {
+    border-left: 1px solid #006699;
+}
+.premier-league .events {
+    border-left: 1px solid #0080FF;
+}
+.ligue-1 .events {
+    border-left: 1px solid #8000FF;
+}
+.bundesliga .events {
+    border-left: 1px solid #FF0000;
+}
+.serie-a .events {
+    border-left: 1px solid #0000FF;
+}
+.eredivise .events {
+    border-left: 1px solid #FF8000;
+}
+.primeira-liga .events {
+    border-left: 1px solid #00FF40;
+}
+.primera-división .events {
+    border-left: 1px solid #FF0080;
+}
+
+.home-events {
+    text-align: left;
+}
+
+.away-events {
+    text-align: right;
+}
+
+.events img {
+    height: 20px;
+    width: 20px;
 }
