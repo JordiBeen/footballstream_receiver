@@ -142,7 +142,7 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
         $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').toLowerCase());
 
         // MATCHUP
-        $matchNode.find('.matchup').html(matchInfo['matchup']);
+        $matchNode.find('.matchup').html(matchInfo['matchup'] + " <span class='timer'>(" + matchInfo['status'] + "')</span>");
 
         // Replace all characters with a - so we get a date object
         // like this: "01-01-2016-20-30"
