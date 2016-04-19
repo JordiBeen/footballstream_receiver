@@ -9,7 +9,7 @@ $(document).on('data-message-changed', function() {
     setInterval(function(){ 
         getDataForEachMatch(false);
     }, 15000);
-    $("#event").removeClass('hidden');;
+    $("#event").removeClass('hidden');
 });
 
 function splitScreen() {
