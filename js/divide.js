@@ -6,6 +6,9 @@ function splitScreen() {
     // Get container element
     var $container = $("#container");
 
+    // Hide event element
+    $("#event").hide();
+
     // Create an array according to the matches that came from the app
     var matchString = $container.data('matches');
     var matchArray = matchString.split(",");
@@ -237,7 +240,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
             }
 
             html += '<p class=' + teamSide + '-events>\
-                            <img src="/images/' + event["type"] + '.png"/>\
+                            <img src="./images/' + event["type"] + '.png"/>\
                             <span class="player">' + event["player"] + '</span>\
                             <span class="result">' + event["result"] + '</span>\
                             <span class="assist">' + event["assist"] + '</span>\
@@ -261,4 +264,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
     } else if ($info.find('.away').innerHeight() > $info.find('.events').innerHeight()){
         $info.find('.events').height($info.find('.away').height());
     }
+
+    // LATEST EVENTS
+    $(document).trigger("new-match-event", events[0]);
 }

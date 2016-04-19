@@ -13,6 +13,27 @@
     <div data-matches="" id='container' class="container-fluid">
     </div>
 
+    <div id="event">
+        <div id="center-block">
+            <div class="row">
+                <div id="eventTypeContainer" class="col-lg-12">
+                    <h1 id="eventName" class="text-center">GOAL!</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div id="eventInfoContainer" class="col-lg-12">
+                    <div class="col-lg-6 text-right" id="eventImageContainer">
+                        <image src="images/goal.png" id="eventImage" />
+                    </div>
+                    <div id="eventText" class="col-lg-6">
+                        <h2 id="playerName">Player name</h2>
+                        <h2 id="teamName">Team name</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.countdown.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -33,6 +54,7 @@
             $(document).trigger('data-message-changed');
         })
     </script>
+    <script src="js/events.js"></script>
     <script src="js/divide.js"></script>
 </body>
 
