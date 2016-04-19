@@ -55,6 +55,7 @@ function splitScreen() {
                             </div>\
                             <div class="row info hidden">\
                                 <div class="events"></div>\
+                                <div class="panel panel-default hidden"><div class="panel-body commentary"></div></div>\
                                 <div class="home col-md-4"></div>\
                                 <div class="stats col-md-4"></div>\
                                 <div class="away col-md-4"></div>\
@@ -188,7 +189,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
         "shots_ongoal": "Shots on goal",
         "redcards": "Red cards",
         "corners": "Corners",
-        "possesiontime": "Possesion",
+        "possesiontime": "Possession",
         "shots_total": "Shots total"
     };
     for(stats in localteam){
@@ -217,26 +218,11 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode){
         $tweet.find('img').height($tweet.find('.tweet-text').innerHeight());
     }
 
+    // LATEST COMMENTARY
     var commentaries = matchInfo['commentaries'];
-    console.log(commentaries)
-
-
-//     // COMMENTARIES
-//     var commentaries = []
-//     for(commentary in matchInfo['commentaries']){
-//         var commentary = matchInfo['commentaries'][commentary];
-//         var minute = commentary['minute'].replace('\'', '');
-//         commentaries[minute] = commentary;
-//     }
-
-
-//     commentaries.sort();
-//     commentaries.reverse().reverse();
-//     for(commentary in commentaries){
-//         console.log(commentary);
-//         var commentary = commentaries[commentary]
-//         console.log(commentary);
-//     }
-//     console.log(commentaries);
-
+    if(commentaries && commentaries[0] !== 'undefined'){
+        commentary = commentaries[0];
+        $info.find('.commentary').parent().removeClass('hidden');
+        $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
+    }
 }
