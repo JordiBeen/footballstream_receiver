@@ -1,12 +1,12 @@
 <html>
 
 <head>
-    <title>FootballStream</title>
+    <title>FootballStream Receiver</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/ripples.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-material-design.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <!-- <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script> -->
+    <script src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
 </head>
 
 <body>
@@ -39,21 +39,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/ripples.min.js"></script>
     <script src="js/material.min.js"></script>
-    <!-- <script src="js/chromecast.js"></script> -->
-    <script>
-        $(document).ready(function() {
-            var $container = $("#container");
-            // 1 match
-            $container.data('matches', "663,665");
-            // // 2 matches
-            // $container.data('matches', "663,665");
-            // // 3 matches
-            // $container.data('matches', "663,665,69");
-            // // 4 matches
-            // $container.data('matches', "663,665,69,713");
-            $(document).trigger('data-message-changed');
-        })
-    </script>
+    <script src="js/chromecast.js"></script>
     <script src="js/events.js"></script>
     <script src="js/divide.js"></script>
 </body>
