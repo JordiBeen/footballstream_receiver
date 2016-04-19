@@ -1,7 +1,7 @@
 $(document).on('data-message-changed', function() {
     splitScreen();
     setInterval(function(){ 
-        getDataForEachMatch();
+        getDataForEachMatch(false);
     }, 15000);
 });
 
@@ -58,9 +58,10 @@ function splitScreen() {
                             </div>\
                             <div class="row info hidden">\
                                 <div class="commentary-body hidden commentary"></div>\
-                                <div class="home col-md-2"></div>\
-                                <div class="stats col-md-2"></div>\
-                                <div class="away col-md-2"></div>\
+                                <div class="col-md-6">\
+                                    <table class="table borderless text-center stats">\
+                                    </table>\
+                                </div>\
                                 <div class="events col-md-6"></div>\
                                 <div class="row">\
                                     <div class="col-md-8 col-md-offset-2 col-xs-12 tweet hidden">\
@@ -77,10 +78,10 @@ function splitScreen() {
     $container.html(html);
 
     // Fire off the initial getData function
-    getDataForEachMatch();
+    getDataForEachMatch(true);
 }
 
-function getDataForEachMatch() {
+function getDataForEachMatch(firstTime) {
     var $matches = $(".match");
     var matchesLength = $matches.length;
 
@@ -105,11 +106,11 @@ function getDataForEachMatch() {
 
     // Fire off all get requests, and fill the data when they are done
     $.when.apply($, requests).then(function() {
-        fillBasicInfoForEachMatch(matchesObject);
+        fillBasicInfoForEachMatch(matchesObject, firstTime);
     })
 }
 
-function fillBasicInfoForEachMatch(matchesObject) {
+function fillBasicInfoForEachMatch(matchesObject, firstTime) {
     // Loop through all matches in the matches object
     for (matchId in matchesObject) {
         // Get match info object per match
@@ -151,18 +152,22 @@ function fillBasicInfoForEachMatch(matchesObject) {
 
         // Check if the date is in the future, but it is today
         if (match_datetime > now && (check_now.setHours(0, 0, 0, 0) == check_match_datetime.setHours(0, 0, 0, 0))) {
-            $matchNode.find('.status').html("<p class='countdown'></p>").countdown(match_datetime, function(event) {
+            if(firstTime){
+                $matchNode.find('.status').html("<p class='countdown'></p>").countdown(match_datetime, function(event) {
                     $(this).find('.countdown').text(
                         event.strftime("Starts in %-H hours and %-M minutes and %-S seconds")
                     )
-                })
+                });
+            }
                 // Check if the date is in the future
         } else if (match_datetime > now) {
-            $matchNode.find('.status').countdown(match_datetime, function(event) {
-                $(this).text(
-                    event.strftime("Starts %-D days from now")
-                )
-            });
+            if(firstTime){
+                $matchNode.find('.status').countdown(match_datetime, function(event) {
+                    $(this).text(
+                        event.strftime("Starts %-D days from now")
+                    )
+                });
+            }
             // The date has passed, game has begun or is finished, we can show all of our info now
         } else {
             fillDetailedInfoForEachMatch(matchInfo, $matchNode);
@@ -180,9 +185,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
     teamMapping = {}
 
     // STATS
-    var $home = $info.find('.home');
     var $stats = $info.find('.stats');
-    var $away = $info.find('.away');
     teamMapping[matchInfo['home_team']['id']] = 'home';
     teamMapping[matchInfo['away_team']['id']] = 'away';
 
@@ -200,21 +203,12 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
         "shots_total": "Shots total"
     };
 
-    $home.html("");
     $stats.html("");
-    $away.html("");
     for (stats in localteam) {
-        stats = localteam[stats];
-        for (stat in stats) {
-            $home.append("<p class=" + stat + ">" + stats[stat] + "</p>");
-            $stats.append("<p><strong>" + statToStringMapping[stat] + "</strong></p>")
-        }
-    }
-
-    for (stats in awayteam) {
-        stats = awayteam[stats];
-        for (stat in stats) {
-            $away.append("<p class=" + stat + ">" + stats[stat] + "</p>");
+        local_stats = localteam[stats];
+        away_stats = awayteam[stats];
+        for (stat in local_stats) {
+            $stats.append("<tr><td>" + local_stats[stat] + "</td><td><strong>" + statToStringMapping[stat] + "</strong></td><td>" + away_stats[stat] + "</td></tr>")
         }
     }
 
@@ -235,7 +229,8 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
         var html = "";
         // Sort events by minute ascending
         events.sort(function(a, b) {
-            return (a.minute > b.minute) ? 1 : ((b.minute > a.minute) ? -1 : 0); });
+            return (a.minute > b.minute) ? 1 : ((b.minute > a.minute) ? -1 : 0); 
+        });
         for (event in events) {
             event = events[event];
             var teamSide = teamMapping[event['team']['id']];
@@ -274,10 +269,10 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
         $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
     }
 
-    if ($info.find('.away').height() < $info.find('.events').height()) {
-        $info.find('.away').height($info.find('.events').height());
-    } else if ($info.find('.away').innerHeight() > $info.find('.events').innerHeight()) {
-        $info.find('.events').height($info.find('.away').height());
+    if ($info.find('.stats').height() < $info.find('.events').height()) {
+        $info.find('.stats').height($info.find('.events').height());
+    } else if ($info.find('.stats').innerHeight() > $info.find('.events').innerHeight()) {
+        $info.find('.events').height($info.find('.stats').height());
     }
 
 }
