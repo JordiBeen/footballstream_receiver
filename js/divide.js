@@ -170,22 +170,22 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
             }
             // The date has passed, game has begun or is finished, we can show all of our info now
         } else {
-            fillDetailedInfoForEachMatch(matchInfo, $matchNode);
+            fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime);
         }
     }
 }
 
-function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
+function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     // Show score
     $matchNode.find('.status').html("<span class='score'><strong>" + matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score'] + "</strong></span>");
 
     // Remove hidden info div    
     var $info = $matchNode.find('.info');
     $info.removeClass('hidden');
-    teamMapping = {}
-
+    
     // STATS
     var $stats = $info.find('.stats');
+    teamMapping = {}
     teamMapping[matchInfo['home_team']['id']] = 'home';
     teamMapping[matchInfo['away_team']['id']] = 'away';
 
@@ -223,8 +223,23 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
         $tweet.find('img').height($tweet.find('.tweet-text').innerHeight());
     }
 
+    // LATEST COMMENTARY
+    var commentaries = matchInfo['commentaries'];
+    if (commentaries && commentaries[0] !== 'undefined') {
+        commentary = commentaries[0];
+        $info.find('.commentary').removeClass('hidden');
+        $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
+    }
+
+    if ($info.find('.stats').height() < $info.find('.events').height()) {
+        $info.find('.stats').height($info.find('.events').height());
+    } else if ($info.find('.stats').innerHeight() > $info.find('.events').innerHeight()) {
+        $info.find('.events').height($info.find('.stats').height());
+    }
+
     // EVENTS
     var events = matchInfo['events'];
+    var $events = $info.find('.events')
     if (events) {
         var html = "";
         // Sort events by minute ascending
@@ -258,21 +273,17 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode) {
                         <p>\
             ';
         }
-        $info.find('.events').html(html);
-    }
 
-    // LATEST COMMENTARY
-    var commentaries = matchInfo['commentaries'];
-    if (commentaries && commentaries[0] !== 'undefined') {
-        commentary = commentaries[0];
-        $info.find('.commentary').removeClass('hidden');
-        $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
+        // Check if the new last event is new,
+        var last_event = events[events.length - 1];
+        if(!($events.data('last-event-id') == last_event['id'])){
+            $events.data('last-event-id', last_event['id']);
+            // If is the first time we're checking data?
+            if(!firstTime){
+                $(document).trigger("new-match-event", last_event);
+            }
+            
+        } 
+        $events.html(html);
     }
-
-    if ($info.find('.stats').height() < $info.find('.events').height()) {
-        $info.find('.stats').height($info.find('.events').height());
-    } else if ($info.find('.stats').innerHeight() > $info.find('.events').innerHeight()) {
-        $info.find('.events').height($info.find('.stats').height());
-    }
-
 }
