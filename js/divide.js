@@ -231,12 +231,6 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
         $info.find('.commentary').html("<h4>" + commentary['minute'] + "</h4> <p>" + commentary['comment'] + "</p>");
     }
 
-    if ($info.find('.stats').height() < $info.find('.events').height()) {
-        $info.find('.stats').height($info.find('.events').height());
-    } else if ($info.find('.stats').innerHeight() > $info.find('.events').innerHeight()) {
-        $info.find('.events').height($info.find('.stats').height());
-    }
-
     // EVENTS
     var events = matchInfo['events'];
     var $events = $info.find('.events')
@@ -285,5 +279,11 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
             
         } 
         $events.html(html);
+    }
+
+    if ($info.find('.stats').height() < $info.find('.events').height()) {
+        $info.find('.stats').height($info.find('.events').height());
+    } else if ($info.find('.stats').innerHeight() > $info.find('.events').innerHeight()) {
+        $info.find('.events').height($info.find('.stats').height());
     }
 }
