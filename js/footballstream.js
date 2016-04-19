@@ -142,7 +142,16 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
         $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').toLowerCase());
 
         // MATCHUP
-        $matchNode.find('.matchup').html(matchInfo['matchup'] + " <span class='timer'>(" + matchInfo['status'] + "')</span>");
+        var statusHtml = "";
+        if(isInt(matchInfo['status'])){
+            statusHtml += " <span class='timer'>(" + matchInfo['status'] + "')</span>"
+        }
+        function isInt(value) {
+            var er = /^-?[0-9]+$/;
+
+            return er.test(value);
+        }
+        $matchNode.find('.matchup').html(matchInfo['matchup'] + statusHtml);
 
         // Replace all characters with a - so we get a date object
         // like this: "01-01-2016-20-30"
