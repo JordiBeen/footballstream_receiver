@@ -187,6 +187,13 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
 
 function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     // Show score
+    var localteam_score = 0;
+    var visitorteam_score = 0;
+    if(matchInfo['localteam_score']){
+        localteam_score = matchInfo['localteam_score']
+    } else {
+        visitorteam_score = matchInfo['visitorteam_score']
+    }
     $matchNode.find('.status').html("<span class='score'><strong>" + matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score'] + "</strong></span>");
 
     // Remove hidden info div    
@@ -199,26 +206,28 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     teamMapping[matchInfo['home_team']['id']] = 'home';
     teamMapping[matchInfo['away_team']['id']] = 'away';
 
-    var localteam = matchInfo['match_stats']['localteam'];
-    var awayteam = matchInfo['match_stats']['visitorteam'];
-    var statToStringMapping = {
-        "saves": "Saves",
-        "yellowcards": "Yellow cards",
-        "offsides": "Offsides",
-        "fouls": "Fouls",
-        "shots_ongoal": "Shots on goal",
-        "redcards": "Red cards",
-        "corners": "Corners",
-        "possesiontime": "Possession",
-        "shots_total": "Shots total"
-    };
+    if(!matchInfo['match_stats'] == 'undefined'){
+        var localteam = matchInfo['match_stats']['localteam'];
+        var awayteam = matchInfo['match_stats']['visitorteam'];
+        var statToStringMapping = {
+            "saves": "Saves",
+            "yellowcards": "Yellow cards",
+            "offsides": "Offsides",
+            "fouls": "Fouls",
+            "shots_ongoal": "Shots on goal",
+            "redcards": "Red cards",
+            "corners": "Corners",
+            "possesiontime": "Possession",
+            "shots_total": "Shots total"
+        };
 
-    $stats.html("");
-    for (stats in localteam) {
-        local_stats = localteam[stats];
-        away_stats = awayteam[stats];
-        for (stat in local_stats) {
-            $stats.append("<tr><td>" + local_stats[stat] + "</td><td><strong>" + statToStringMapping[stat] + "</strong></td><td>" + away_stats[stat] + "</td></tr>")
+        $stats.html("");
+        for (stats in localteam) {
+            local_stats = localteam[stats];
+            away_stats = awayteam[stats];
+            for (stat in local_stats) {
+                $stats.append("<tr><td>" + local_stats[stat] + "</td><td><strong>" + statToStringMapping[stat] + "</strong></td><td>" + away_stats[stat] + "</td></tr>")
+            }
         }
     }
 
