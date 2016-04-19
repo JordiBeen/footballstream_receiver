@@ -43,11 +43,13 @@ function splitScreen() {
     var html = "";
     for (var i = 0; i < matchAmount; i++) {
         html += '   <div class="col-md-' + columnClass + '"">\
+                        <div class="panel-heading text-center">\
+                            <h3 class="panel-title competition"></h3>\
+                        </div>\
                         <div data-match-id=' + matchArray[i] + ' class="match text-center well">\
                             <div class="row">\
                                 <p class="date_start"></p>\
                                 <p class="venue"></p>\
-                                <p class="competition"></p>\
                                 <p class="matchup"></p>\
                                 <p class="status"></p>\
                             </div>\
@@ -121,7 +123,8 @@ function fillBasicInfoForEachMatch(matchesObject) {
         $matchNode.find('.venue').html(matchInfo['venue']);
 
         // COMPETITION
-        $matchNode.find('.competition').html(matchInfo['competition']['name']);
+        $matchNode.parent().find('.competition').html(matchInfo['competition']['name']);
+        $matchNode.parent().find('.competition').parent().attr("data-competition", matchInfo['competition']['name']);
 
         // MATCHUP
         $matchNode.find('.matchup').html(matchInfo['matchup']);

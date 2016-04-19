@@ -1,3 +1,7 @@
+#container {
+    margin-top: 5px;
+}
+
 .matchup {
 	font-size:2.4em;
 }
@@ -6,9 +10,48 @@
 	font-size:3.5em;
 }
 
-
-
 .twitter-user {
 	font-weight: bold;
 	display: block;
+}
+
+/* Set competition background */
+[data-competition="UEFA Champions League"] {
+    background-color: #FFD700;
+}
+
+[data-competition="UEFA Europa League"] {
+    background-color: #CC6633;
+}
+
+[data-competition="Fa Cup"] {
+    background-color: #006699;
+}
+
+[data-competition="Premier League"] {
+    background-color: #0080FF;
+}
+
+[data-competition="Ligue 1"] {
+    background-color: #8000FF;
+}
+
+[data-competition="Bundesliga"] {
+    background-color: #FF0000;
+}
+
+[data-competition="Serie A"] {
+    background-color: #0000FF;
+}
+
+[data-competition="Eredivisie"] {
+    background-color: #FF8000;
+}
+
+[data-competition="Primeira Liga"] {
+    background-color: #00FF40;
+}
+
+[data-competition="Primera División"] {
+    background-color: #FF0080;
 }
