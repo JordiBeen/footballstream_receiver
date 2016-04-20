@@ -8,7 +8,7 @@ $(document).on('data-message-changed', function() {
     splitScreen();
     setInterval(function(){ 
         getDataForEachMatch(false);
-    }, 15000);
+    }, 60000);
     $("#event").removeClass('hidden');
 });
 
