@@ -211,7 +211,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     teamMapping[matchInfo['home_team']['id']] = 'home';
     teamMapping[matchInfo['away_team']['id']] = 'away';
 
-    if(!matchInfo['match_stats'] == 'undefined'){
+    if(matchInfo['match_stats']){
         var localteam = matchInfo['match_stats']['localteam'];
         var awayteam = matchInfo['match_stats']['visitorteam'];
         var statToStringMapping = {
