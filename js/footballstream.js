@@ -1,10 +1,4 @@
 $(document).ready(function() {
-
-        var $container = $("#container");
-    $container.data("matches", "27,214");
-    $(document).trigger("data-message-changed");
-
-    
     setTimeout(function(){
         $('body').removeClass('loading');
     }, 3000);
