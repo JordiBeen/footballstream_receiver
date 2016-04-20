@@ -43,7 +43,7 @@ function splitScreen() {
                             <h3 class="panel-title competition"></h3>\
                         </div>\
                         <div data-match-id=' + matchArray[i] + ' class="match text-center well">\
-                            <div class="row">\
+                            <div class="row basic-info">\
                                 <p class="date_start"></p>\
                                 <p class="venue"></p>\
                                 <p class="matchup"></p>\
