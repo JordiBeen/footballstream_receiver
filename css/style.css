@@ -301,3 +301,15 @@ body {
 .section {
     float: left;
 }
+
+.full.events {
+    border: none;
+}
+
+.full.events .home-events{
+    margin-left: 25%;
+}
+
+.full.events .away-events{
+    margin-right: 25%;
+}

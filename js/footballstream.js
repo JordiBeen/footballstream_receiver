@@ -234,6 +234,9 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
                 $stats.append("<tr><td>" + local_stats[stat] + "</td><td><strong>" + statToStringMapping[stat] + "</strong></td><td>" + away_stats[stat] + "</td></tr>")
             }
         }
+    } else {
+        $stats.remove();
+        $info.find('.events').removeClass('col-md-6').addClass('col-md-12').addClass('full');
     }
 
     // TWEET
