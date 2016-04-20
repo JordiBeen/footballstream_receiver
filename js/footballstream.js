@@ -16,6 +16,9 @@ function splitScreen() {
     // Get container element
     var $container = $("#container");
 
+    //Set ammount of colums per section
+    var columns = 2;
+
     // Hide event element
     $("#event").hide();
 
@@ -26,35 +29,15 @@ function splitScreen() {
     // Check how many matches are selected
     var matchAmount = matchArray.length
 
-    // Alter bootstrap classes according match amount
-    // selected
-    switch (matchAmount) {
-        case 1:
-            var columnClass = 12;
-            break;
-        case 2:
-            var columnClass = 6;
-            break;
-        case 3:
-            var columnClass = 4;
-            break;
-        case 4:
-            var columnClass = 6;
-            break;
-        case 5:
-            var columnClass = 4;
-            break;
-        case 6:
-            var columnClass = 4;
-            break;
-        default:
-            var columnClass = 1;
-            break;
-    }
+    // Set the column width
+    var columnClass = 12 / columns;
 
     // Create HTML according to match amount
     var html = "";
     for (var i = 0; i < matchAmount; i++) {
+        if ((i % columns) == 0) {
+            html += '<div class="section">'
+        }
         html += '   <div class="col-md-' + columnClass + ' match-col">\
                         <div class="panel-heading text-center">\
                             <h3 class="panel-title competition"></h3>\
@@ -82,10 +65,18 @@ function splitScreen() {
                             </div>\
                         </div>\
                     </div>';
+        if (((i + 1) % columns) == 0 || (i + 1) == matchAmount) {
+            html += '</div>'
+        }
     };
 
     // Append the HTML to the container
     $container.html(html);
+
+    //Set widths
+    var sectionAmount = $container.find('.section').length;
+    $container.width(sectionAmount* 100 - 30 + "%");
+    $(".section").width(100 / sectionAmount + "%");
 
     // Fire off the initial getData function
     getDataForEachMatch(true);
