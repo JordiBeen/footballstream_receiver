@@ -133,16 +133,11 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
         $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').toLowerCase());
 
         // MATCHUP
-        var statusHtml = "";
-        if(isInt(matchInfo['status'])){
-            statusHtml += " <span class='timer'>(" + matchInfo['status'] + "')</span>"
-        }
-        function isInt(value) {
-            var er = /^-?[0-9]+$/;
-
-            return er.test(value);
-        }
-        $matchNode.find('.matchup').html(matchInfo['matchup'] + statusHtml);
+        var homeTeam = matchInfo['away_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
+        var awayTeam = matchInfo['home_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
+        var homeIcon = "<image class='team-icon' src='/images/icons/" + homeTeam + ".png' alt='' />";
+        var awayIcon = "<image class='team-icon' src='/images/icons/" + awayTeam + ".png' alt='' />";
+        $matchNode.find('.matchup').html(homeIcon + matchInfo['matchup'] + awayIcon);
 
         // Replace all characters with a - so we get a date object
         // like this: "01-01-2016-20-30"
@@ -196,7 +191,15 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     if(matchInfo['visitorteam_score']){
         visitorteam_score = matchInfo['visitorteam_score']
     } 
-    $matchNode.find('.status').html("<span class='score'><strong>" + localteam_score + " - " + visitorteam_score + "</strong></span>");
+    var statusHtml = "";
+    if(isInt(matchInfo['status'])){
+        statusHtml += " <span class='timer'>(" + matchInfo['status'] + "')</span>"
+    }
+    function isInt(value) {
+        var er = /^-?[0-9]+$/;
+        return er.test(value);
+    }
+    $matchNode.find('.status').html("<span class='score'><strong>" + localteam_score + " - " + visitorteam_score + "</strong></span>" + statusHtml);
 
     // Remove hidden info div    
     var $info = $matchNode.find('.info');

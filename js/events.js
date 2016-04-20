@@ -23,7 +23,7 @@ function showEvent(eventInfo) {
     $("#eventName").text(minute + " " + eventToStringMapping[type]);
     $("#playerName").text(player);
     $("#teamName").text(team);
-    $("#eventImage").attr("src", "./images/" + type + ".png");
+    $("#eventImage").attr("src", "/images/" + type + ".png");
 
     playSound(type);
 
@@ -41,10 +41,10 @@ function playSound(type) {
     switch (type) {
         case "redcard":
         case "yellowcard":
-            audioElement.setAttribute('src', './audio/whistle.mp3');
+            audioElement.setAttribute('src', '/audio/whistle.mp3');
             break;
         case "goal":
-            audioElement.setAttribute('src', './audio/' + goals[Math.floor(Math.random() * goals.length)]);
+            audioElement.setAttribute('src', '/audio/' + goals[Math.floor(Math.random() * goals.length)]);
             break;
     }
     audioElement.setAttribute('autoplay', 'autoplay');
