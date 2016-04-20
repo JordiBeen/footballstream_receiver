@@ -198,12 +198,14 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
     // Show score
     var localteam_score = 0;
     var visitorteam_score = 0;
+
     if(matchInfo['localteam_score']){
         localteam_score = matchInfo['localteam_score']
-    } else {
+    } 
+    if(matchInfo['visitorteam_score']){
         visitorteam_score = matchInfo['visitorteam_score']
-    }
-    $matchNode.find('.status').html("<span class='score'><strong>" + matchInfo['localteam_score'] + " - " + matchInfo['visitorteam_score'] + "</strong></span>");
+    } 
+    $matchNode.find('.status').html("<span class='score'><strong>" + localteam_score + " - " + visitorteam_score + "</strong></span>");
 
     // Remove hidden info div    
     var $info = $matchNode.find('.info');
