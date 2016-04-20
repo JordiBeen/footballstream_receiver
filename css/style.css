@@ -302,6 +302,10 @@ body {
     float: left;
 }
 
+.events {
+    font-size: 0.8em;
+}
+
 .full.events {
     border: none;
 }
@@ -312,4 +316,8 @@ body {
 
 .full.events .away-events{
     margin-right: 25%;
+}
+
+.stats{
+    font-size: 0.8em;
 }

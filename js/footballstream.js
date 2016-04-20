@@ -246,7 +246,7 @@ function fillDetailedInfoForEachMatch(matchInfo, $matchNode, firstTime) {
         var tweet = tweets[Math.floor(Math.random() * tweets.length)];
         $tweet.removeClass('hidden');
         $tweet.find('img').attr("src", tweet['profile_image_url']);
-        $tweet.find('.tweet-text').html("<span class='twitter-user'>@" + tweet['name'] + ":</span><span class='tweet'>" + tweet['text'] + "</span>");
+        $tweet.find('.tweet-text').html("<span class='twitter-user'>@" + tweet['screen_name'] +"</span><span class='tweet'>" + tweet['text'] + "</span>");
         $tweet.find('img').height($tweet.find('.tweet-text').innerHeight());
     }
 
