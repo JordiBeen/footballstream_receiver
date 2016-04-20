@@ -1,4 +1,10 @@
 $(document).ready(function() {
+
+        var $container = $("#container");
+    $container.data("matches", "27,214");
+    $(document).trigger("data-message-changed");
+
+    
     setTimeout(function(){
         $('body').removeClass('loading');
     }, 3000);
@@ -130,7 +136,7 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
 
         // COMPETITION
         $matchNode.parent().find('.competition').html(matchInfo['competition']['name']);
-        $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').replace(new RegExp("\u00F3", 'g'), '-').toLowerCase());
+        $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').replace(new RegExp("\u00F3", 'g'), 'o').toLowerCase());
 
         // MATCHUP
         var homeTeam = matchInfo['home_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
