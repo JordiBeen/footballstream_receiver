@@ -133,8 +133,8 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
         $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').toLowerCase());
 
         // MATCHUP
-        var homeTeam = matchInfo['away_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
-        var awayTeam = matchInfo['home_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
+        var homeTeam = matchInfo['home_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
+        var awayTeam = matchInfo['away_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
         var homeIcon = "<image class='team-icon' src='/images/icons/" + homeTeam + ".png' alt='' />";
         var awayIcon = "<image class='team-icon' src='/images/icons/" + awayTeam + ".png' alt='' />";
         $matchNode.find('.matchup').html(homeIcon + matchInfo['matchup'] + awayIcon);
