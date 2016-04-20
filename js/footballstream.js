@@ -130,7 +130,7 @@ function fillBasicInfoForEachMatch(matchesObject, firstTime) {
 
         // COMPETITION
         $matchNode.parent().find('.competition').html(matchInfo['competition']['name']);
-        $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').toLowerCase());
+        $matchNode.parent().find('.competition').closest('.match-col').addClass(matchInfo['competition']['name'].replace(new RegExp(" ", 'g'), '-').replace(new RegExp("\u00F3", 'g'), '-').toLowerCase());
 
         // MATCHUP
         var homeTeam = matchInfo['home_team']['name'].replace(new RegExp(" ", 'g'), '_').replace(new RegExp("-", 'g'), '_').toLowerCase();
