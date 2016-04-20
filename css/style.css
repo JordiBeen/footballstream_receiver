@@ -149,7 +149,7 @@ body {
     background-color: #00FF40;
 }
 
-.primera-división .panel-heading {
+.primera-division .panel-heading {
     background-color: #FF0080;
 }
 
@@ -189,7 +189,7 @@ body {
     border-top: 2px solid #00FF40;
     border-bottom: 2px solid #00FF40;
 }
-.primera-división .commentary-body {
+.primera-division .commentary-body {
     border-top: 2px solid #FF0080;
     border-bottom: 2px solid #FF0080;
 }
@@ -221,7 +221,7 @@ body {
 .primeira-liga .away {
     border-right: 1px solid #00FF40;
 }
-.primera-división .away {
+.primera-division .away {
     border-right: 1px solid #FF0080;
 }
 
